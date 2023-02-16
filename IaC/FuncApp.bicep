@@ -28,6 +28,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
     name: storageAccountType
   }
   kind: 'Storage'
+  properties:{
+    publicNetworkAccess: 'Disabled'
+  }
 }
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
