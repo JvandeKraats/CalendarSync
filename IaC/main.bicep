@@ -7,7 +7,11 @@ resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   location: region
 }
 
-module initAzureFunction 'durableFunc.bicep' = {
+module initAzureFunction 'FuncApp.bicep' = {
   scope: resourceGroup('CalendarSync')
   name: 'Initialisation Function'
+  params: {
+    appName: 'InitFunc'
+    location: 'westeurope'
+  }
 }
