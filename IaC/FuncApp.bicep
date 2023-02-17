@@ -28,8 +28,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
     name: storageAccountType
   }
   kind: 'Storage'
-  properties:{
+  properties: {
     networkAcls: {
+      bypass: 'AzureServices, Logging, Metrics'
       defaultAction: 'Deny'
     }
   }
@@ -94,7 +95,9 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
       ]
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
+      http20Enabled: true
     }
     httpsOnly: true
+    clientCertEnabled: true
   }
 }
