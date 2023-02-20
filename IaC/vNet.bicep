@@ -16,10 +16,10 @@ param privateStorageBlobDnsZoneName string = 'BlobDnsZone'
 param privateStorageQueueDnsZoneName string = 'QueueDnsZone'
 param privateStorageTableDnsZoneName string = 'TableDnsZone'
 
-param virtualNetworkLinksSuffixFileStorageName string = ''
-param virtualNetworkLinksSuffixBlobStorageName string = ''
-param virtualNetworkLinksSuffixQueueStorageName string = ''
-param virtualNetworkLinksSuffixTableStorageName string = ''
+param vNetLinkFileStorageName string = '${privateStorageFileDnsZoneName}-link'
+param vNetLinkBlobStorageName string = '${privateStorageBlobDnsZoneName}-link'
+param vNetLinkQueueStorageName string = '${privateStorageQueueDnsZoneName}-link'
+param vNetLinkTableStorageName string = '${privateStorageTableDnsZoneName}-link'
 
 @description('id and name')
 param storageAccount object
@@ -86,7 +86,7 @@ resource privateStorageTableDnsZone 'Microsoft.Network/privateDnsZones@2020-06-0
 
 resource privateStorageFileDnsZoneName_virtualNetworkLinksSuffixFileStorage 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   parent: privateStorageFileDnsZone
-  name: virtualNetworkLinksSuffixFileStorageName
+  name: vNetLinkFileStorageName
   location: 'global'
   properties: {
     registrationEnabled: false
@@ -98,7 +98,7 @@ resource privateStorageFileDnsZoneName_virtualNetworkLinksSuffixFileStorage 'Mic
 
 resource privateStorageBlobDnsZoneName_virtualNetworkLinksSuffixBlobStorage 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   parent: privateStorageBlobDnsZone
-  name: virtualNetworkLinksSuffixBlobStorageName
+  name: vNetLinkBlobStorageName
   location: 'global'
   properties: {
     registrationEnabled: false
@@ -110,7 +110,7 @@ resource privateStorageBlobDnsZoneName_virtualNetworkLinksSuffixBlobStorage 'Mic
 
 resource privateStorageQueueDnsZoneName_virtualNetworkLinksSuffixQueueStorage 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   parent: privateStorageQueueDnsZone
-  name: virtualNetworkLinksSuffixQueueStorageName
+  name: vNetLinkQueueStorageName
   location: 'global'
   properties: {
     registrationEnabled: false
@@ -122,7 +122,7 @@ resource privateStorageQueueDnsZoneName_virtualNetworkLinksSuffixQueueStorage 'M
 
 resource privateStorageTableDnsZoneName_virtualNetworkLinksSuffixTableStorage 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   parent: privateStorageTableDnsZone
-  name: virtualNetworkLinksSuffixTableStorageName
+  name: vNetLinkTableStorageName
   location: 'global'
   properties: {
     registrationEnabled: false
