@@ -6,6 +6,12 @@ param appName string
 @description('Location for all resources.')
 param location string = 'westeurope'
 
+param fileShareName string = 'AzFuncFileShare'
+
+param storageAccountName string = '${uniqueString(resourceGroup().id)}azfunctions'
+param vnetName string
+param subnetName string
+
 @description('Storage Account type')
 @allowed([
   'Standard_LRS'
@@ -17,7 +23,6 @@ param storageAccountType string = 'Standard_LRS'
 var functionAppName = appName
 var hostingPlanName = appName
 var applicationInsightsName = appName
-var storageAccountName = '${uniqueString(resourceGroup().id)}azfunctions'
 
 //Needed because => "When creating a function app, you must create or link to a general-purpose Azure Storage account that supports Blob, Queue, and Table storage. 
 //                   This requirement exists because Functions relies on Azure Storage for operations such as managing triggers and logging function executions."
@@ -103,4 +108,26 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
     httpsOnly: true
     clientCertEnabled: true
   }
+}
+
+resource contentStorageAccountName_default_fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-04-01' = {
+  name: '${storageAccountName}/default/${toLower(fileShareName)}'
+  dependsOn: [
+    storageAccount
+  ]
+}
+
+resource networkConfig 'Microsoft.Web/sites/networkconfig@2018-11-01' = {
+  parent: functionApp
+  name: 'virtualNetwork'
+  properties: {
+    subnetResourceId: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
+    swiftSupported: true
+  }
+}
+
+@description('The id and name of the created Storage Account')
+output storageAccount object = {
+  id: storageAccount.id
+  name: storageAccount.name
 }
