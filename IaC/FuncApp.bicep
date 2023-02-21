@@ -36,7 +36,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   properties: {
     networkAcls: {
       bypass: 'AzureServices, Logging, Metrics'
-      defaultAction: 'Deny'
+      defaultAction: 'Allow'
     }
   }
 }

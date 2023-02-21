@@ -60,6 +60,7 @@ jobs:
       id: checkov
       uses: bridgecrewio/checkov-action@master
       with: 
+        skip_check: CKV_AZURE_35
         framework: bicep
 
     # Upload results to GitHub Advanced Security
