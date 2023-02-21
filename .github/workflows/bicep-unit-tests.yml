@@ -53,6 +53,7 @@ jobs:
             --name validate-${{ github.run_id }} \
             --template-file IaC/main.bicep \
             --location $LOCATION 
+            --parameters gitHubPrincipalId=${{ vars.GITHUBPRINCIPALID}}
 
     # Perform a security scan of the bicep code using checkov
     - name: Run Checkov action

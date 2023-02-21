@@ -50,6 +50,7 @@ jobs:
             --name validate-${{ github.run_id }} \
             --template-file IaC/main.bicep \
             --location $LOCATION     
+            --parameters gitHubPrincipalId=${{ vars.GITHUBPRINCIPALID}}
 
     # Preview changes
     - name: "What-If"
@@ -60,6 +61,7 @@ jobs:
             --name whatif-${{ github.run_id }} \
             --template-file IaC/main.bicep \
             --location $LOCATION > whatif
+            --parameters gitHubPrincipalId=${{ vars.GITHUBPRINCIPALID}}
             
       # Create string output of Whatif
     - name: Create String Output
