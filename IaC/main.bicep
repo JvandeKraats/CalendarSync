@@ -47,7 +47,6 @@ module vNet 'vNet.bicep' = {
       {
         name: storageAccName
         addressPrefix: '10.100.1.0/24'
-        privateLinkServiceNetworkPolicies: 'Enabled'
       }
     ]
   }

@@ -8,8 +8,7 @@ param vnetAddressPrefix string
 @description('IP addresses of DNS servers to use')
 param dnsServers array = []
 
-@description('Name, addressPrefix, delegations and privateLinkServiceNetworkPolicies of the subnets')
-
+@description('Name, addressPrefix and delegations of the subnets')
 param subnets array
 
 param privateStorageFileDnsZoneName string = 'StorageFileDnsZone'
@@ -42,7 +41,6 @@ resource vnet 'Microsoft.Network/virtualNetworks@2020-05-01' = {
       properties: {
         addressPrefix: item.addressPrefix
         delegations: item.delegations
-        privateLinkServiceNetworkPolicies: item.privateLinkServiceNetworkPolicies
       }
     }]
   }
