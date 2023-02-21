@@ -8,7 +8,8 @@ param vnetAddressPrefix string
 @description('IP addresses of DNS servers to use')
 param dnsServers array = []
 
-@description('Name, addressPrefix, delegations, routeTable, natGateway, networkSecurityGroup, privateEndpointNetworkPolicies and privateLinkServiceNetworkPolicies of the subnets')
+@description('Name, addressPrefix, delegations, privateEndpointNetworkPolicies and privateLinkServiceNetworkPolicies of the subnets')
+
 param subnets array
 
 param privateStorageFileDnsZoneName string = 'StorageFileDnsZone'
@@ -41,9 +42,6 @@ resource vnet 'Microsoft.Network/virtualNetworks@2020-05-01' = {
       properties: {
         addressPrefix: item.addressPrefix
         delegations: item.delegations
-        routeTable: ((!empty(item.routeTable)) ? json('{"id":"${resourceId('Microsoft.Network/routeTables', item.routeTable)}"}') : json('null'))
-        natGateway: ((!empty(item.natGateway)) ? json('{"id":"${resourceId('Microsoft.Network/natGateways', item.natGateway)}"}') : json('null'))
-        networkSecurityGroup: ((!empty(item.networkSecurityGroup)) ? json('{"id":"${resourceId('Microsoft.Network/networkSecurityGroups', item.networkSecurityGroup)}"}') : json('null'))
         privateEndpointNetworkPolicies: item.privateEndpointNetworkPolicies
         privateLinkServiceNetworkPolicies: item.privateLinkServiceNetworkPolicies
       }
