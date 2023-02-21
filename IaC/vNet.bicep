@@ -9,6 +9,7 @@ param vnetAddressPrefix string
 param dnsServers array = []
 
 @description('Name, addressPrefix, delegations, privateEndpointNetworkPolicies and privateLinkServiceNetworkPolicies of the subnets')
+
 param subnets array
 
 param privateStorageFileDnsZoneName string = 'StorageFileDnsZone'
