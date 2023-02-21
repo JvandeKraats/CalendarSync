@@ -117,15 +117,6 @@ resource contentStorageAccountName_default_fileShare 'Microsoft.Storage/storageA
   ]
 }
 
-resource networkConfig 'Microsoft.Web/sites/networkconfig@2018-11-01' = {
-  parent: functionApp
-  name: 'virtualNetwork'
-  properties: {
-    subnetResourceId: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
-    swiftSupported: false
-  }
-}
-
 @description('The id and name of the created Storage Account')
 output storageAccount object = {
   id: storageAccount.id
