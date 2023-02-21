@@ -132,4 +132,5 @@ jobs:
             --name deploy-${{ github.run_id }} \
             --template-file IaC/main.bicep \
             --location $LOCATION 
+            --parameters gitHubPrincipalId=${{ vars.GITHUBPRINCIPALID}}
             

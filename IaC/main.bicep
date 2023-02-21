@@ -1,4 +1,5 @@
 param region string = 'westeurope'
+param gitHubPrincipalId string
 var storageAccName = '${uniqueString(rg.id)}azfunctions'
 var initFuncSubnetName = 'AzureFuncDelegatedSubnet'
 var vnetName = 'virtualNetwork'
@@ -50,5 +51,14 @@ module vNet 'vNet.bicep' = {
         privateEndpointNetworkPolicies: 'Disabled'
       }
     ]
+  }
+}
+
+module roleAssignments 'StorageAccountRoleAssignment.bicep' = {
+  scope: rg
+  name: 'storageAccountRoleAssignments'
+  params: {
+    principalId: gitHubPrincipalId
+    storageAccName: storageAccName
   }
 }
