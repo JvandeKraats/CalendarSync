@@ -157,5 +157,5 @@ jobs:
       with:
         name: drop
         path: |
-          ./IaC/main.json
+          ./IaC/ArtifactDrop/main.json
 
