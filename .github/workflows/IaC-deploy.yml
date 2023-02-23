@@ -1,0 +1,64 @@
+name: 'ARM Deploy'
+
+on:
+  workflow_run:
+    workflows: ["IaC Validation"]
+    branches: ["main"]
+    types:
+      - completed
+
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+  
+
+#Special permissions required for OIDC authentication
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+  
+env:
+  LOCATION: "westeurope"
+
+jobs:
+  bicep-deploy:
+    name: 'Bicep Deploy'
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Authenticate to Az CLI using OIDC
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    # Download ARM artifact    
+    - name: 'Download artifact'
+      uses: actions/download-artifact@v2
+      with:
+        name: drop
+        path: ./IaC/ArtifactDrop
+
+    # Deploy
+    - name: "Bicep Deployment"
+      uses: Azure/cli@v1
+      with:
+        inlineScript: |
+          az deployment sub create \
+            --name deploy-${{ github.run_id }} \
+            --template-file ./IaC/ArtifactDrop/main.json \
+            --location $LOCATION \
+            --parameters gitHubPrincipalId=${{ vars.GITHUBPRINCIPALID}}
+            
