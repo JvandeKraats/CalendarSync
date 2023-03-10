@@ -13,3 +13,6 @@ Added workflows to my GitHub project
 2. One for what-if'ing and deploying the template.
 
 
+# 10-03-2023
+
+As I was not making any progress I decided to make a new branch to start from scratch and focus on making things work rather than making them work inside any of the best practices that exist.
