@@ -5,16 +5,18 @@ using Microsoft.Extensions.Logging;
 
 namespace CalendarSyncApp
 {
-    public class Function1
+    public class SetupFetch
     {
         private readonly ILogger _logger;
 
-        public Function1(ILoggerFactory loggerFactory)
+        public SetupFetch(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<Function1>();
+            _logger = loggerFactory.CreateLogger<SetupFetch>();
         }
 
-        [Function("Function1")]
+        //Zip the project and deploy using az cli.
+
+        [Function("SetupFetch")]
         public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
