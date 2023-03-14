@@ -1,0 +1,47 @@
+name: 'Build project'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+env:
+  AZURE_FUNCTIONAPP_NAME: CalendarSyncApp 
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './src/CalendarSyncApp'      # The path to your web app project
+  DOTNET_MAJOR_VERSION: '7'
+
+
+jobs:
+  build_azure_functions:
+    name: Build azure funcion app
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{env.AZURE_FUNCTIONAPP_PACKAGE_PATH}}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup DotNet ${{ env.DOTNET_MAJOR_VERSION }}.0.x
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: ${{ env.DOTNET_MAJOR_VERSION }}.0.x
+    - name: Print current directory and contents
+      run: ls
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore --output ./output
+    - name: Test
+      run: dotnet test --no-build --no-restore --verbosity normal
+    - name: Publish
+      run: dotnet publish --configuration Release --no-restore --output ./output
+    - name: 'Run Azure Functions action'
+      uses: Azure/functions-action@v1
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}

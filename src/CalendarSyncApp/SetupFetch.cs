@@ -15,13 +15,14 @@ namespace CalendarSyncApp
         }
 
         //Zip the project and deploy using az cli.
-
+        //See: https://learn.microsoft.com/en-us/azure/azure-functions/deployment-zip-push
         [Function("SetupFetch")]
         public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
             var response = req.CreateResponse(HttpStatusCode.OK);
+            response.WriteString("Wow it's data!");
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
             response.WriteString("Welcome to Azure Functions!");

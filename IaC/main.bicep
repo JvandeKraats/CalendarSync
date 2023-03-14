@@ -66,7 +66,7 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
         }
         {
           'name': 'FUNCTIONS_WORKER_RUNTIME'
-          'value': 'dotnet'
+          'value': 'dotnet-isolated'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
