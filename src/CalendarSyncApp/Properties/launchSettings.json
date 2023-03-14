@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "CalendarSyncApp": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7224",
+      "launchBrowser": false
+    }
+  }
+}
