@@ -24,8 +24,11 @@ jobs:
   github-actions-environment-variables-ubuntu:
     runs-on: ubuntu-latest
     steps:
-      - name: List of the GitHub Actions environment variables on Ubuntu
-        run: env
+      - name: ACTIONS_ID_TOKEN_REQUEST_URL value
+        run: printenv ACTIONS_ID_TOKEN_REQUEST_URL
+      
+      - name: ACTIONS_ID_TOKEN_REQUEST_TOKEN value
+        run: printenv ACTIONS_ID_TOKEN_REQUEST_TOKEN
 
   build_bicep_template:
     name: Validate and build the bicep template
