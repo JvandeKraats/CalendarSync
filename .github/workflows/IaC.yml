@@ -1,0 +1,81 @@
+name: 'Build and deploy IaC'
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+  workflow_dispatch:
+
+permissions:
+      id-token: write
+      contents: read
+
+# Stuck here, see https://github.com/actions/toolkit/blob/a91ee0b497d90e7352290ea416f4403e7792aacf/packages/core/src/oidc-utils.ts#L12
+# and https://github.com/Azure/login/blob/master/lib/main.js#L142
+# for reference
+# env:
+#   ACTIONS_ID_TOKEN_REQUEST_URL: 'https://token.actions.githubusercontent.com'
+#   ACTIONS_ID_TOKEN_REQUEST_TOKEN: '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'
+
+jobs:
+  github-actions-environment-variables-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List of the GitHub Actions environment variables on Ubuntu
+        run: env
+
+  build_bicep_template:
+    name: Validate and build the bicep template
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: ./IaC
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Az CLI
+      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+    - name: az version
+      run: az --version
+
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        # enable-AzPSSession: false
+        # environment: azurecloud
+        # allow-no-subscriptions: false
+        # audience: api://AzureADTokenExchange
+
+    - name: 'Validate access to Azure resources'
+      run: az group list
+
+    # - name: Create ARM folder
+    #   run: mkdir ARM
+
+    # - name: Validate the bicep template
+    #   uses: azure/CLI@v1
+    #   with:
+    #     inlineScript: |
+    #       az bicep build --file main.bicep --outdir ARM
+
+    # - name: Upload ARM artifact
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: ARM-artifact
+    #     path: /ARM/main.json
+    
+
+
+
+# Validate and build bicep template so you get the ARM template file
+# Place this .json file inside it's own directory
+# Login to Azure (using service principal or federated identity?) and deploy the IaC
