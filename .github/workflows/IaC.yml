@@ -18,7 +18,7 @@ permissions:
 # for reference
 # env:
 #   ACTIONS_ID_TOKEN_REQUEST_URL: 'https://token.actions.githubusercontent.com'
-#   ACTIONS_ID_TOKEN_REQUEST_TOKEN: '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'
+#   ACTIONS_ID_TOKEN_REQUEST_TOKEN: ''
 
 jobs:
   github-actions-environment-variables-ubuntu:
